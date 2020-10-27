@@ -1,0 +1,22 @@
+.menu{
+    border: 1px solid black!important;
+    width: 100%!important;
+}
+
+.menu div ul{
+    display: flex!important;
+    justify-content: space-between!important;
+} 
+
+li{
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+.bg-dark {
+    background-color: #343a40!important;
+    height: 134px;
+}
