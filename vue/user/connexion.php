@@ -2,7 +2,10 @@
 
 
     include_once ("../../classes/user/User.php");
+    include_once ("../../lib/functions.php");
 
+    $email = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
+    $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
 
     if( isset($_SESSION["short"]) ){
         echo $_SESSION["short"];
@@ -30,6 +33,38 @@
     }
 
     $title = $_SERVER["SCRIPT_NAME"];
+
+    $error = [];
+   
+    if($email)
+    {
+        $error[] = true;
+
+    }else{
+
+        $error [] = false;
+    }
+
+    if($password)
+    {
+        $error[] = true;
+
+    }else{
+
+        $error [] = false;
+    }
+
+    if(!in_array(false, $error))
+    {
+        
+            $user = new User();
+            $user->setEmail($email);
+            $user->setPassword($password);
+            var_dump($user);
+            $resultat = $user->checkInBdd();
+            $user->comparePassword($resultat); 
+    }
+
     
 ?>
 <!DOCTYPE html>
@@ -40,7 +75,7 @@
         <meta name="generator" content="Jekyll v4.1.1">
         <link rel="stylesheet" href="../styles/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
-        <title><?= substr($title, 1,-4) ?></title>
+        <title><?= substr($title, 10,-4) ?></title>
     </head>
     <body>
         
@@ -55,10 +90,10 @@
                 </div>
                 <div>
                     <label for="password" ></label>
-                    <input type="password" name="password"placeholder="Mot de passe"  > 
+                    <input type="password" name="password" placeholder="Mot de passe"  > 
                 </div>
                 <div>
-                    <button type="submit">soumettre</button>
+                    <button type="submit" name="sub" value="submit">soumettre</button>
                     <a href="./inscription.php" id="create">créer un compte</a>
                 </div>
             </form>

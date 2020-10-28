@@ -1,5 +1,16 @@
 <?php
+    session_start();
 
+
+    if( isset($_SESSION["alreadyExist"]) ){
+            echo $_SESSION["alreadyExist"];
+            session_unset();
+    }
+    
+    if( isset($_SESSION["incomplete"]) ){
+        echo $_SESSION["incomplete"];
+        session_unset();
+    }
     
     require_once '../../classes/user/User.php';
 
@@ -15,9 +26,7 @@
     // $input = new InputError();
     // $error = $input->valid($_POST);
    
-    
-
-   $error = [];
+    $error = [];
    
     if($name)
     {
@@ -26,10 +35,8 @@
     }else{
 
         $error []= false;
-
     }
 
-    
     if($firstName)
     {
         $error[] = true;
@@ -37,11 +44,8 @@
     }else{
 
         $error []= false;
-
     }
 
-
-    
     if($pseudo)
     {
         $error[] = true;
@@ -49,11 +53,8 @@
     }else{
 
         $error []= false;
-
     }
 
-
-    
     if($email)
     {
         $error[] = true;
@@ -61,11 +62,8 @@
     }else{
 
         $error []= false;
-
     }
 
-
-    
     if($password)
     {
         $error[] = true;
@@ -73,20 +71,19 @@
     }else{
 
         $error []= false;
-
     }
 
-
-    
-    if(!in_array(false, $error)){
+    if(!in_array(false, $error))
+    {
 
             $user = new User($name, $firstName, $pseudo, $email, $password);
+            var_dump($user);
             $user->checkMail();
             $pass = $user->hashPassword();
             $user->insertInBdd($pass, $user);
+            
     }
 
-    var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +109,7 @@
             <label for="password">mdp</label>
             <input type="password" name="password" >
             <button type="submit">soumettre</button>
-            <a href="./connexion.php">Se connecter</a>
+            <a href="connexion.php">Se connecter</a>
         </form>
         <script src="./fonctions.js"></script>
     </body>

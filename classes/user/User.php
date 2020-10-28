@@ -27,7 +27,7 @@ class User extends Model
      * Set the value of id
      *
      * @return  self
-     */ 
+    */ 
     public function setName($name)
     {
         $this->name = $name;
@@ -37,7 +37,7 @@ class User extends Model
 
     /**
      * Get the value of name
-     */ 
+    */ 
     public function getFirstName()
     {
         return $this->firstName;
@@ -47,7 +47,7 @@ class User extends Model
      * Set the value of name
      *
      * @return  self
-     */ 
+    */ 
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
@@ -58,7 +58,7 @@ class User extends Model
     /**
      * Get the value of name
      *
-     */ 
+    */ 
     public function getPseudo()
     {
         return $this->pseudo;
@@ -68,7 +68,7 @@ class User extends Model
      * Set the value of pseudo
      *
      * @return  self
-     */ 
+    */ 
     public function setPseudo($pseudo)
     {
         $this->pseudo = $pseudo;
@@ -77,7 +77,7 @@ class User extends Model
 
     /**
      * Get the value of email
-     */ 
+    */ 
     public function getEmail()
     {
         return $this->email;
@@ -87,7 +87,7 @@ class User extends Model
      * Set the value of email
      *
      * @return  self
-     */ 
+    */ 
     public function setEmail($email)
     {
         $this->email = $email;
@@ -97,7 +97,7 @@ class User extends Model
 
     /**
      * Get the value of password
-     */ 
+    */ 
     public function getPassword()
     {
         return $this->password;
@@ -126,7 +126,7 @@ class User extends Model
      * vérification e-mail deja utilisé ou non
      * 
      * @param input 
-     */
+    */
     public function checkMail(){
 
         $req = $this->pdo->prepare("SELECT * FROM `user` WHERE mail_user = :mail");
@@ -139,14 +139,14 @@ class User extends Model
         {
             session_start();
             $_SESSION["alreadyExist"] = "compte existant";
-            header("location:../inscription.php");
+            header("location:inscription.php");
             die();
         }
         else
         {
             session_start();
             $_SESSION["created"] = "compte créé connecte toi ";
-            //header("location:../inscription.php");
+            header("location:connexion.php");
         }
     }
 
@@ -156,7 +156,7 @@ class User extends Model
      * @param input password
      * 
      * @return password_hash 
-     */
+    */
      public function hashPassword(){
         $passHash = password_hash($this->password, PASSWORD_DEFAULT);
         return $passHash;
@@ -182,26 +182,12 @@ class User extends Model
     } 
 
     /**
-    * verification de connexion reussite ou non 
-    * 
-    *@param PDO 
-    */
-    static function createAccount($pdo){
-
-        if ($pdo == true){
-            echo "connexion à la BDD reussite.";
-            header("location:../connexion.php");
-        } else {
-            echo " connexion à la BDD echouée ";
-        }
-    } 
-    /**
      * verification nom dans la base de données 
      * 
      * @return array|false retourne un tableau avec 1 
      * utilisateur ou false si il ne trouve rien
-     */
-    public function checkInBdd(){
+    */
+    function checkInBdd(){
 
     
         $req = $this->pdo->prepare("SELECT * FROM `user` WHERE mail_user = :mail" ); 
@@ -211,5 +197,63 @@ class User extends Model
         ]);
         
         return $req->fetch();
+    }
+
+    /**
+     * Comparaison du pass envoyé via le formulaire avec la base 
+     * 
+     * @var bool $isPasswordCorrect verification mot de passe auprès de la Bdd 
+     * 
+     * @param array|false $resultat Le resultat retourné par la fonction userInput() qui contient un utilisateur ou rien 
+     * 
+     * @param array $input un array de type $_POST
+     * 
+     * @param void
+    */
+    public function comparePassword($resultat){
+
+        if (is_array($resultat))
+        {
+            $isPasswordCorrect = password_verify($this->password, $resultat["mot_de_passe_user"]);
+
+            if ($isPasswordCorrect) 
+            {
+                session_start();
+                
+                $_SESSION['user'] = $resultat;
+                $_SESSION["connected"] = true;
+                header("location:home.php");
+            }
+            else 
+            {
+                session_start();
+                $_SESSION["WrongId"] = "verifiez votre mdp";
+                header("location:connexion.php");
+                die();
+            }
+        }
+        else
+        {
+            session_start();
+            $_SESSION["WrongId"] = "verifiez votre adresse!";
+            header("location:connexion.php");
+            die();
+        }
+    }
+
+    /**
+    * l'utilisateur rentre une recherche et on etablie le lien avec la bdd
+    * 
+    * @return array
+    */
+    public function articles($input)
+    {
+
+        $sql = 'SELECT libelle_jeu, genre_jeu, libelle_plateforme FROM jeu WHERE libelle_jeu LIKE "%'.$input.'%" OR genre_jeu like "%'.$input.'%" ORDER BY id_jeu DESC ';
+        $articles = $this->pdo->prepare($sql);
+
+        $articles->execute();
+
+        return $articles->fetchAll();
     }
 }
