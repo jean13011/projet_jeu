@@ -1,4 +1,6 @@
 <?php
+session_start();
+var_dump($_SESSION);
     include_once ("classes/user/User.php");
     include_once ("lib/functions.php");
 ?>
@@ -9,6 +11,7 @@
     <?php 
         require ("partials/navbar.php");
         display($user);
+        
     ?>
 
         <script src="scripts/script.js"></script>

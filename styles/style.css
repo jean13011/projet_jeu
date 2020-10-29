@@ -20,3 +20,12 @@ a{
     background-color: #343a40!important;
     height: 134px;
 }
+
+.form{
+    display: flex;
+    justify-content: center;
+}
+
+.form-control{
+    width: 16%!important;
+}

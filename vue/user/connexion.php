@@ -7,30 +7,7 @@
     $email = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
 
-    if( isset($_SESSION["short"]) ){
-        echo $_SESSION["short"];
-        session_unset();
-    }
-
-    if( isset($_SESSION["created"]) ){
-        echo $_SESSION["created"];
-        session_unset();
-    }
-
-    if( isset($_SESSION["envahisseur"]) ){
-        echo $_SESSION["envahisseur"];
-        session_unset();
-    }
-
-    if( isset($_SESSION["WrongId"]) ){
-        echo $_SESSION["WrongId"];
-        session_unset();
-    }
-
-    if( isset($_SESSION["notConnected"]) ){
-        echo $_SESSION["notConnected"];
-        session_unset();
-    }
+    sessionSignUp();
 
     $title = $_SERVER["SCRIPT_NAME"];
 
@@ -60,24 +37,34 @@
             $user = new User();
             $user->setEmail($email);
             $user->setPassword($password);
-            var_dump($user);
-            $resultat = $user->checkInBdd();
-            $user->comparePassword($resultat); 
+            $resultat = $user->checkMailForSignIn();
+            $user->comparePasswordInDB($resultat); 
     }
 
     
 ?>
 <!DOCTYPE html>
-<html lang="fr">
-    <head>
+<head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="generator" content="Jekyll v4.1.1">
-        <link rel="stylesheet" href="../styles/style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
-        <title><?= substr($title, 10,-4) ?></title>
+        <link rel="stylesheet" href="../../styles/style.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <title><?= strtoupper(substr($title, 10,-4)) ?></title>
     </head>
+        
     <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand">logo</a>
+        </nav>
+        <nav class="menu">
+            <div>
+                <ul>
+                    <li><a href="">Jeux vidéo</a></li>
+                    <li><a href="">Accéssoires</a></li>
+                    <li><a href="">Coup de (coeur)</a></li>
+                </ul>
+            </div>
+        </nav>
         
         <div id="form">
             <form  method="post" class="box">

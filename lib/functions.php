@@ -58,7 +58,7 @@ function setPseudoForUser()
  * sessions conditions
  *
  */
-function sessions()
+function sessionsSignIn()
 {
     if(!$_SESSION["connected"]){
 
@@ -67,8 +67,90 @@ function sessions()
         die();
     } 
 
-    if( isset($_SESSION["passChanged"]) ){
-        echo $_SESSION["passChanged"];
+}
+
+/**
+ * all sessions's conditions for the sign up
+ *
+ */
+function sessionSignUp()
+{
+    if( isset($_SESSION["short"]) ){
+        echo $_SESSION["short"];
+        session_unset();
+    }
+
+    if( isset($_SESSION["created"]) ){
+        echo $_SESSION["created"];
+        session_unset();
+    }
+
+    if( isset($_SESSION["envahisseur"]) ){
+        echo $_SESSION["envahisseur"];
+        session_unset();
+    }
+
+    if( isset($_SESSION["WrongId"]) ){
+        echo $_SESSION["WrongId"];
+        session_unset();
+    }
+
+    if( isset($_SESSION["notConnected"]) ){
+        echo $_SESSION["notConnected"];
         session_unset();
     }
 }
+
+/**
+ * display an error if passwords are not matching
+ *
+ * 
+ */
+function displayIdenticalPasswordError()
+{
+    if(isset($_SESSION["nonIdentique"]))
+    {
+        echo $_SESSION["nonIdentique"];
+        session_unset();
+    }
+
+    if(isset($_SESSION["tooShort"]))
+    {
+        echo $_SESSION["tooShort"];
+        session_unset();
+    }
+}
+
+/**
+ * sessions's conditions for the mail if he is actually use 
+ *
+ * 
+ */
+function displayEmailTakenOrIncomplete()
+{
+    if( isset($_SESSION["alreadyExist"]))
+    {
+            echo $_SESSION["alreadyExist"];
+            session_unset();
+    }
+    
+    if( isset($_SESSION["incomplete"]))
+    {
+        echo $_SESSION["incomplete"];
+        session_unset();
+    } 
+}
+
+/**
+ *get a verification key to validate the email
+ * 
+ * @param string $pseudo
+ */
+function getKey($pseudo)
+{
+    $vkey = md5(time(). $pseudo);
+
+    return $vkey;
+}
+
+  
