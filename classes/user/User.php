@@ -5,8 +5,6 @@ define('DS', DIRECTORY_SEPARATOR);
 
 include_once (dirname(ROOT). DS."model/Model.php");
 
-
-
 class User extends Model
 {
     
@@ -117,6 +115,9 @@ class User extends Model
         parent::__construct();
     }
 
+
+    //INSCRIPTION USER ***********************************************
+
     /**
      * confirme le mot de passe si c'est bon on insert
      *
@@ -196,15 +197,16 @@ class User extends Model
     */ 
     public function insertNewUser($passHash, $user,$key)
     {
-        $req = $this->pdo->prepare("INSERT INTO `user` (pseudo_user, mail_user, mot_de_passe_user,vkey) VALUES (:pseudo, :mail, :password, :key)"); 
+        $req = $this->pdo->prepare("INSERT INTO `user` (pseudo_user, mail_user, mot_de_passe_user) VALUES (:pseudo, :mail, :password)"); 
 
         $req->bindParam(':pseudo', $this->pseudo);
         $req->bindParam(':mail', $this->email);
         $req->bindParam(':password', $passHash);
-        $req->bindParam(':key', $key);
         
         $req->execute();
     } 
+
+    //CONNEXION USER ***************************************
 
     /**
      * verification mail dans la base de données 
@@ -284,6 +286,8 @@ class User extends Model
 
         return $articles->fetchAll();
     }
+
+    //UPDATE USER ******************************************
 
     /**
      * vérifie dans la bdd les données liée a l'id rentré
@@ -376,6 +380,45 @@ class User extends Model
             echo " connexion à la BDD echouée ";
         }
     } 
+
+    public function changePseudo()
+    {
+        
+        if($_POST["currentPseudo"] !== $this->pseudo)
+        {
+            $sql = "UPDATE `user` SET
+                    pseudo_user = :pseudo 
+                    WHERE id_user = :id";
+            $userId = $_SESSION["user"]["id_user"];
+            $req = $this->pdo->prepare($sql);
+            $req->execute([
+                "pseudo" => $this->pseudo,
+                "id" => $userId
+            ]);
+            session_start();
+            $_SESSION["pseudoChanged"] = "pseudo changé";
+            header("location:profilUser.php");
+        } else {
+            echo "pseudo identiques";
+        }
+    }
+
+    public function deleteUser()
+    {
+        
+            $userId = $_SESSION["user"]["id_user"];
+            $sql = "DELETE FROM `user`
+                    WHERE id_user = :id";
+            
+            $req = $this->pdo->prepare($sql);
+            $req->execute([
+                "id" => $userId
+            ]);
+            
+            session_start();
+            $_SESSION["userDeleted"] = "compte supprimé";
+            header("location:inscription.php");
+    }  
     
          
 }

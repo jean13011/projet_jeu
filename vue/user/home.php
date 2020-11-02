@@ -3,9 +3,8 @@
     session_start();
 
     include_once ("../../classes/user/User.php");
-
-    //including functions for a more clean code
     include_once ("../../lib/functions.php");
+    
     $user = new User;
 
     //set the pseudo of the user which is passed in the $_SESSION for using it in the menu 

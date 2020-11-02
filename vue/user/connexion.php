@@ -6,8 +6,11 @@
 
     $email = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
+    $remember = filter_input(INPUT_POST, 'rememberMe', FILTER_DEFAULT);
 
     sessionSignUp();
+
+    
 
     $title = $_SERVER["SCRIPT_NAME"];
 
@@ -31,26 +34,37 @@
         $error [] = false;
     }
 
+    
+
     if(!in_array(false, $error))
     {
-        
-            $user = new User();
-            $user->setEmail($email);
-            $user->setPassword($password);
-            $resultat = $user->checkMailForSignIn();
-            $user->comparePasswordInDB($resultat); 
+        $user = new User();
+        $user->setEmail($email);
+        $user->setPassword($password);
+        $resultat = $user->checkMailForSignIn();
+        $user->comparePasswordInDB($resultat); 
+            
+    }
+
+    if(isset($_POST["rememberMe"]))
+    {
+        $user = new User;
+        $resultat = $user->checkMailForSignIn();
+
+       var_dump( remember($resultat));
+       die();
     }
 
     
 ?>
 <!DOCTYPE html>
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="../../styles/style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <title><?= strtoupper(substr($title, 10,-4)) ?></title>
-    </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../styles/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title><?= strtoupper(substr($title, 10,-4)) ?></title>
+</head>
         
     <body>
         <nav class="navbar navbar-dark bg-dark">
@@ -77,12 +91,18 @@
                 </div>
                 <div>
                     <label for="password" ></label>
-                    <input type="password" name="password" placeholder="Mot de passe"  > 
+                    <input type="password" name="password" placeholder="Mot de passe"  class="form-control"> 
                 </div>
                 <div>
-                    <button type="submit" name="sub" value="submit">soumettre</button>
-                    <a href="./inscription.php" id="create">créer un compte</a>
+                    <input type="checkbox" name="rememberMe" id="remembercheckbox" /><label for="remembercheckbox">Se souvenir de moi</label>
+                    <br/><br/>
                 </div>
+                <br>
+                <div>
+                    <button type="submit" name="sub" value="submit">soumettre</button>
+                </div>
+                
+                <a href="inscription.php" id="create">créer un compte</a>
             </form>
         </div>
         <?php

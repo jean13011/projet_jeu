@@ -63,7 +63,7 @@ function sessionsSignIn()
     if(!$_SESSION["connected"]){
 
         $_SESSION['notConnected'] = 'Veuillez vous connecter';
-        header("location:./connexion.php");
+        header("location:connexion.php");
         die();
     } 
 
@@ -141,16 +141,20 @@ function displayEmailTakenOrIncomplete()
     } 
 }
 
-/**
- *get a verification key to validate the email
- * 
- * @param string $pseudo
- */
-function getKey($pseudo)
+function checkForDeleteUser($user)
 {
-    $vkey = md5(time(). $pseudo);
+    if(isset($_POST["deleteUser"]))
+    {
+        $user->deleteUser();
+    }
+    
+}  
 
-    return $vkey;
+function remember($resultat)
+{
+    
+    setcookie('mail', $resultat["mail_user"], time()+365*24*3600, null, null, false, true);
+    setcookie('password', $resultat["mot_de_passe_user"], time()+365*24*3600, null, null, false, true);
+
+    return true;
 }
-
-  

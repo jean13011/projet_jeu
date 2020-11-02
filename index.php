@@ -1,6 +1,5 @@
 <?php
 session_start();
-var_dump($_SESSION);
     include_once ("classes/user/User.php");
     include_once ("lib/functions.php");
 ?>
@@ -9,7 +8,7 @@ var_dump($_SESSION);
 <html lang="fr">
     
     <?php 
-        require ("partials/navbar.php");
+        require_once ("partials/navbar.php");
         display($user);
         
     ?>

@@ -1,7 +1,10 @@
 <?php
     session_start();
 
-
+    if(isset($_SESSION["userDeleted"]))
+    {
+        echo $_SESSION["userDeleted"];
+    }
    
     require_once '../../classes/user/User.php';
     require_once '../../lib/functions.php';
@@ -10,7 +13,6 @@
     $email = filter_input(INPUT_POST, 'mail', FILTER_VALIDATE_EMAIL);
     $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
     $confirmPassword = filter_input(INPUT_POST, 'confirmPassword', FILTER_DEFAULT);
-    $key = getKey($pseudo);
    
     $title = $_SERVER["SCRIPT_NAME"];
 
@@ -67,7 +69,7 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="../../styles/style.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <title><?= strtoupper(substr($title, 10,-4)) ?></title>
     </head>
@@ -89,7 +91,6 @@
         <?php 
             displayIdenticalPasswordError();
             displayEmailTakenOrIncomplete();
-            echo $key;
 
         ?>
         <form method="post" name="formSaisie">

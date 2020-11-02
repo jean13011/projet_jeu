@@ -1,6 +1,5 @@
 <?php 
 
-    
 
 abstract class Model
 {
@@ -28,3 +27,4 @@ abstract class Model
         return new PDO($dsn, $username, $password, [PDO::FETCH_OBJ]);
     }
 }
+

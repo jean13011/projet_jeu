@@ -1,6 +1,10 @@
 <?php
+
     session_start();
 
+    include_once ("../../classes/user/User.php");
+    include_once ("../../lib/functions.php");
+    
     if(!$_SESSION["connected"])
     {
 
@@ -25,19 +29,16 @@
         echo $_SESSION["passChanged"];
     }
 
-    include_once ("../../classes/user/User.php");
-    include_once ("../../lib/functions.php");
 
     setPseudoForUser();
     $title = $_SERVER["SCRIPT_NAME"];
 
-   
-    $oldPassword =  filter_input(INPUT_POST, 'currentPassword', FILTER_DEFAULT);
-    $password = filter_input(INPUT_POST, 'newPassword', FILTER_DEFAULT);
-    
     $error = [];
+
+    $oldPseudo =  filter_input(INPUT_POST, 'currentPseudo', FILTER_DEFAULT);
+    $pseudo = filter_input(INPUT_POST, 'newPseudo', FILTER_DEFAULT);
    
-    if($password)
+    if($pseudo)
     {
         $error[] = true;
 
@@ -49,13 +50,9 @@
     if(!in_array(false, $error))
     {
         
-            $user = new User();
-            $user->setPassword($password);
-            $resultat = $user->checkId();
-            $passHash = $user->hashPassword();
-            $req = $user->changePassword($resultat, $passHash);
-            var_dump($req);
-            $user->addedPassword($req);
+        $user = new User();
+        $user->setPseudo($pseudo);
+        $user->changePseudo();    
     }
 
 ?>
@@ -67,7 +64,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../../styles/style.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <title><?= strtoupper(substr($title, 10,-8)) ?></title>
+        <title>PROFIL</title>
 </head>
         
 <body>
@@ -92,11 +89,11 @@
     </nav>
     <a href="profilUser.php">retour</a>
     <form  method="post">
-        <label for="currentPassword">mot de passe actuel</label>
-        <input type="password" name="currentPassword" >
-        <label for="newPassword">nouveau mot de passe</label>
-        <input type="password" name="newPassword" >
-        <button type="submit" >soumettre</button>
+        <label for="currentPseudo">pseudo actuel</label>
+        <input type="text" name="currentPseudo" value="<?= setPseudoForUser() ?>" >
+        <label for="newPseudo">nouveau pseudo</label>
+        <input type="text" name="newPseudo" >
+        <button type="submit">soumettre</button>
     </form>
 </body>
 </html>
