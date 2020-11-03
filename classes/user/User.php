@@ -12,48 +12,9 @@ class User extends Model
     private string $email;
     private string $password;
 
-        /**
-     * Get the value of id
-     */ 
-    public function getName()
-    {
-        return $this->name;
-    }
-
+    
     /**
-     * Set the value of id
-     *
-     * @return  self
-    */ 
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of name
-    */ 
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Set the value of name
-     *
-     * @return  self
-    */ 
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of name
+     * Get the value of pseudo
      *
     */ 
     public function getPseudo()
@@ -102,8 +63,13 @@ class User extends Model
 
     public function setPassword($password)
     {
-        $this->password =$password;
+        $this->password = $password;
         return $this;
+    }
+
+    public function setAccreditation()
+    {
+
     }
 
     public function __construct(string $p='', string $m='', string $ps='')

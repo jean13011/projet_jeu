@@ -53,6 +53,7 @@ function setPseudoForUser()
     return $pseudo;
 }
 
+//INSCRIPTION ********************
 
 /**
  * sessions conditions
@@ -141,6 +142,13 @@ function displayEmailTakenOrIncomplete()
     } 
 }
 
+//USER SPACE **************************
+
+/**
+ * if the condition is active we deleting the user from the DB
+ * 
+ * @param object 
+ */
 function checkForDeleteUser($user)
 {
     if(isset($_POST["deleteUser"]))
@@ -150,6 +158,11 @@ function checkForDeleteUser($user)
     
 }  
 
+/**
+ * set cookie for the "remember me"
+ * 
+ * @return bool
+ */
 function remember($resultat)
 {
     
@@ -158,3 +171,22 @@ function remember($resultat)
 
     return true;
 }
+
+//ADMIN CONNEXION ********************
+
+/**
+ * sessions conditions for admin
+ *
+ */
+function sessionsSignInForAdmin()
+{
+    if(!$_SESSION["connected"]){
+
+        $_SESSION['notConnected'] = 'Veuillez vous connecter à votre espace administrateur';
+        header("location:admin.php");
+        die();
+    } 
+
+   
+}
+
