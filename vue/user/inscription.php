@@ -91,7 +91,6 @@
         <?php 
             displayIdenticalPasswordError();
             displayEmailTakenOrIncomplete();
-            var_dump($_POST);
         ?>
         <form method="post" name="formSaisie">
             <label for="pseudo">pseudo</label>
@@ -104,16 +103,6 @@
             <input type="password" name="confirmPassword" >
             <button type="submit">soumettre</button>
             <a href="connexion.php">Se connecter</a>
-            <div class="control-group <?php echo !empty($AccreditationError) ? 'error' : ''; ?>">
-                <label class="control-label">Accreditation</label>
-                <div class="controls">
-                    <label for="Accreditation">Admin&nbsp;</label><input name="Accreditation" type="radio" value="<?php echo !empty($Accreditation) ? $Accreditation : '10'; ?>">
-                    <label for="Accreditation">User&nbsp;</label><input name="Accreditation" type="radio" value="<?php echo !empty($Accreditation) ? $Accreditation : '1'; ?>" checked>
-                    <?php if (!empty($AccreditationError)) : ?>
-                        <span class="help-inline"><?php echo $AccreditationError; ?></span>
-                    <?php endif; ?>
-                </div>
-            </div>
         </form>
         <script src="./fonctions.js"></script>
     </body>
