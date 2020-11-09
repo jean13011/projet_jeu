@@ -2,6 +2,7 @@
 session_start();
     include_once ("classes/user/User.php");
     include_once ("lib/functions.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -9,8 +10,7 @@ session_start();
     
     <?php 
         require_once ("partials/navbar.php");
-        display($user);
-        
+        displayGames($user);
     ?>
 
         <script src="scripts/script.js"></script>

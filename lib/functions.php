@@ -24,7 +24,7 @@ function regexPassword($input){
 /**
 * affiche le nom du jeu et son genre dans la recherche 
 */
-function display($user){
+function displayGames($user){
 
     if(isset($_GET["q"]) && !empty($_GET["q"])){
 
@@ -151,7 +151,7 @@ function displayEmailTakenOrIncomplete()
  */
 function checkForDeleteUser($user)
 {
-    if(isset($_POST["deleteUser"]))
+    if(isset($_POST["deleteUser"]) && intval($_SESSION["user"]["accreditation"]) !== 200)
     {
         $user->deleteUser();
     }
@@ -172,21 +172,70 @@ function remember($resultat)
     return true;
 }
 
-//ADMIN CONNEXION ********************
+//ADMIN  ********************
 
 /**
- * sessions conditions for admin
- *
- */
-function sessionsSignInForAdmin()
-{
-    if(!$_SESSION["connected"]){
+* affiche le nom,prenom et pays dans la recherche 
+*/
+function display($user){
 
-        $_SESSION['notConnected'] = 'Veuillez vous connecter à votre espace administrateur';
-        header("location:admin.php");
-        die();
-    } 
+    //si au moin un POST est passe et que le button avec la valeur sub est activer alors on execute la recherche
+    if(count($_POST) > 0 && isset($_POST['sub'])){
 
-   
+        $req = $user->displayUsers($_POST["spseudo"], $_POST["smail"]);
+        $result= [];
+
+        foreach($req as $key => $values){
+            
+            $result[] = 
+                    "<div class='display'>" . 
+                        "<p> <strong>id: </strong>" . $values["id_user"] . "<br>" .
+                        "<strong>pseudo: </strong> " . $values["pseudo_user"] . "<br>" . 
+                        "<strong>accreditation: </strong> " . $values["accreditation"] . "<br>" . 
+                        "<strong>mail: </strong> " . $values["mail_user"] .  "</p>" .
+
+                        "<form action='delete.php' method='post' name='suppr' >
+                            <input type='hidden' name='id' value='".$values['id_user']."'>
+                            <button name='delete' value=1 id='suppr' >supprimer</button>
+                        </form> ".
+                        "<form action='inscription.php?id=".$values["id_user"]."' method='post'> 
+                            <button name='update' value=1>modifier</button> 
+                        </form>". 
+
+                    "</div>";
+        }
+        return $result;
+    }
 }
 
+/**
+ * ajoute un bouton modifier et supprimer a tout les joueurs trouvé 
+ * 
+ * @param object
+ */
+function updateAndDeleteForAll($user)
+{
+
+    if($user){
+            
+        //affichage des recherche
+        $value = display($user);
+
+    }
+
+    if(!isset($value)){
+
+        return;
+    }   
+
+    for($i=0; $i<count($value) ;$i++){
+
+        echo $value[$i];
+    }
+        
+
+    if(!isset($value["id_user"])){
+
+        return;
+    }
+}

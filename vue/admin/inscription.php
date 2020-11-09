@@ -5,6 +5,14 @@
     {
         echo $_SESSION["userDeleted"];
     }
+
+    if(!isset($_SESSION["user"]))
+    {
+        session_start();
+        header("location:../user/connexion.php");
+        echo "page introuvable connectez-vous !!";
+        
+    }
    
     require_once '../../classes/user/User.php';
     require_once '../../lib/functions.php';
@@ -67,7 +75,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <?php require_once ("../../partials/header.php") ?>
-        <h1>Inscription</h1>
+        <h1>ajouter un contributeur</h1>
         <?php 
             displayIdenticalPasswordError();
             displayEmailTakenOrIncomplete();
@@ -75,7 +83,7 @@
         ?>
         <form method="post" name="formSaisie">
             <label for="pseudo">pseudo</label>
-            <input type="text" name="pseudo">
+            <input type="text" name="pseudo" >
             <label for="mail">e-mail</label>
             <input type="email" name="mail" >
             <label for="password">mot de passe</label>
@@ -83,7 +91,6 @@
             <label for="password">confirmer mot de passe</label>
             <input type="password" name="confirmPassword" >
             <button type="submit">soumettre</button>
-            <a href="connexion.php">Se connecter</a>
         </form>
         <script src="./fonctions.js"></script>
     </body>

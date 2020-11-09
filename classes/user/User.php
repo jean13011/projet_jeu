@@ -11,6 +11,7 @@ class User extends Model
     private string $pseudo;
     private string $email;
     private string $password;
+    private int  $accreditation = 1 ;
 
     
     /**
@@ -67,11 +68,6 @@ class User extends Model
         return $this;
     }
 
-    public function setAccreditation()
-    {
-
-    }
-
     public function __construct(string $p='', string $m='', string $ps='')
     {
 
@@ -90,6 +86,8 @@ class User extends Model
      * @param string $password
      * 
      * @param string $confirmPassword
+     * 
+     * @return bool
      */
     public function comparePassword($password, $confirmPassword)
     {
@@ -113,7 +111,6 @@ class User extends Model
     /**
      * vérification e-mail deja utilisé ou non
      * 
-     * @param input 
     */
     public function checkMailForSignUp()
     {
@@ -132,7 +129,8 @@ class User extends Model
             header("location:inscription.php");
             die();
         }
-        else
+        elseif (intval($_SESSION["user"]["accreditation"]) !== 200) 
+        
         {
             session_start();
             $_SESSION["created"] = "compte créé connecte toi ";
@@ -145,13 +143,13 @@ class User extends Model
     /**
      * encodage du mot de passe
      * 
-     * @param input password
      * 
-     * @return password_hash 
+     * @return string password_hash 
     */
      public function hashPassword()
      {
         $passHash = password_hash($this->password, PASSWORD_DEFAULT);
+
         return $passHash;
     }
 
@@ -159,15 +157,25 @@ class User extends Model
      * insertion dans la base de données
      * 
      * @param password_hash
+     * 
+     * @param object $user
      *  
     */ 
-    public function insertNewUser($passHash, $user,$key)
+    public function insertNewUser($passHash, $user)
     {
-        $req = $this->pdo->prepare("INSERT INTO `user` (pseudo_user, mail_user, mot_de_passe_user) VALUES (:pseudo, :mail, :password)"); 
+
+        if(isset($_SESSION["user"]["accreditation"]) && intval($_SESSION["user"]["accreditation"]) === 200)
+        {
+            
+            $this->accreditation = 100;
+        }
+
+        $req = $this->pdo->prepare("INSERT INTO `user` (pseudo_user, mail_user, mot_de_passe_user, accreditation) VALUES (:pseudo, :mail, :password, :accreditation)"); 
 
         $req->bindParam(':pseudo', $this->pseudo);
         $req->bindParam(':mail', $this->email);
         $req->bindParam(':password', $passHash);
+        $req->bindParam(':accreditation', $this->accreditation);
         
         $req->execute();
     } 
@@ -335,7 +343,7 @@ class User extends Model
     public function addedPassword($req)
     {
 
-        if ($req == true )
+        if ($req == true)
         {
             
             session_start();
@@ -347,6 +355,9 @@ class User extends Model
         }
     } 
 
+    /**
+     * modifier le pseudo de l'utilisateur
+     */
     public function changePseudo()
     {
         
@@ -355,6 +366,7 @@ class User extends Model
             $sql = "UPDATE `user` SET
                     pseudo_user = :pseudo 
                     WHERE id_user = :id";
+
             $userId = $_SESSION["user"]["id_user"];
             $req = $this->pdo->prepare($sql);
             $req->execute([
@@ -365,10 +377,14 @@ class User extends Model
             $_SESSION["pseudoChanged"] = "pseudo changé";
             header("location:profilUser.php");
         } else {
+
             echo "pseudo identiques";
         }
     }
 
+    /**
+     * supprime l'utilisateur 
+     */
     public function deleteUser()
     {
         
@@ -386,5 +402,32 @@ class User extends Model
             header("location:inscription.php");
     }  
     
+    /**
+    * l'utilisateur rentre un nom ou un prenom ou un pays et on le trouve dans la bdd
+    * @param string
+    * @return array
+    */
+    public  function displayUsers($pseudo, $email)
+    {
+
+        $sql = "SELECT * FROM `user` 
+                WHERE pseudo_user like :pseudo 
+                or mail_user like :mail";
+
+        $result  = $this->pdo->prepare($sql);
+
+       //concaténation pour le LIKE
+       $pseudo="%".$pseudo."%";
+       $email="%".$email."%";
+
+       $result->bindParam(":pseudo", $pseudo);
+       $result->bindParam(":mail", $email);
+
+       $result->execute(); 
+
+       $req = $result->fetchAll();
+ 
+       return $req;
+   }
          
 }
