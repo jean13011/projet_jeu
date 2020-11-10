@@ -45,8 +45,8 @@
                     <li><a href="">Accéssoires</a></li>
                     <li><a href="">Coup de (coeur)</a></li>
                     <li><a href="#">Ajouter un produit</a></li>
-                    <li><a href="../admin/inscription.php">Ajouter contributeur</a></li>
-                    <li><a href="../admin/displayUsers.php">Afficher tout les users</a></li>
+                    <li><a href="inscription.php">Ajouter contributeur</a></li>
+                    <li><a href="displayUsers.php">Afficher tout les users</a></li>
                 <?php endif ?>
 
                 <?php if(isset($session) && $session === 100) : ?>

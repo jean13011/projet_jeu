@@ -1,24 +1,12 @@
 <?php
     session_start();
 
-    if(isset($_SESSION["userDeleted"]))
-    {
-        echo $_SESSION["userDeleted"];
-    }
-
-    if(!isset($_SESSION["user"]))
-    {
-        session_start();
-        header("location:../user/connexion.php");
-        echo "page introuvable connectez-vous !!";
-        
-    }
-   
     require_once '../../classes/user/User.php';
     require_once '../../lib/functions.php';
 
     $pseudo = filter_input(INPUT_POST, 'spseudo', FILTER_DEFAULT);
     $email = filter_input(INPUT_POST, 'smail', FILTER_VALIDATE_EMAIL);
+    $role = filter_input(INPUT_POST, 'srole', FILTER_DEFAULT);
     $title = $_SERVER["SCRIPT_NAME"];
 
     // $input = new InputError();
@@ -45,30 +33,44 @@
         $error [] = false;
     }
 
+    if($role)
+    {
+        $error[] = true;
+
+    }else{
+
+        $error [] = false;
+    }
+
     if(!in_array(false, $error))
     {
 
         $user = new User;
-        $user->displayUsers($pseudo, $email);
+        $req = $user->delete($id);
     }
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
-    <?php require_once ("../../partials/header.php") ?>
+<html lang="fr">
+    <?php 
+        require_once ("../../partials/header.php");
+        treatments();
+    ?>
         
         <h2>recherchez un utilisateur</h2>
         <form  method="post">
             <label for="pseudo">pseudo</label>
             <input type="text" name="spseudo">
             <label for="mail">email</label>
-            <input type="text" name="smail">
+            <input type="text" name="smail" >
+            <label for="role">role</label>
+            <input type="text" name="srole" >
             <button type="submit" name="sub" value="2">envoyer</button>
         </form>
-        <div class="form">
-            <!-- ajoute un bouton supprimer et ajouter pour tout les joueurs trouvé -->
-            <?php  updateAndDeleteForAll($user) ?>
+        <div class="display" style="display: flex; justify-content: space-evenly; margin-top: 53px">
+            <!-- ajoute un bouton supprimer et ajouter pour tout les users trouvé -->
+            <?php updateAndDeleteForAll($user)?>
 
         </div>
     

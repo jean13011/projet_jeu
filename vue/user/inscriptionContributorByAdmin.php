@@ -79,13 +79,13 @@
         <?php 
             displayIdenticalPasswordError();
             displayEmailTakenOrIncomplete();
-            
+            incompleteSignIn($pseudo, $email, $password, $confirmPassword);
         ?>
         <form method="post" name="formSaisie">
             <label for="pseudo">pseudo</label>
-            <input type="text" name="pseudo" >
+            <input type="text" name="pseudo" value="<?= showPseudoWhenUpdatingContributor() ?>">
             <label for="mail">e-mail</label>
-            <input type="email" name="mail" >
+            <input type="email" name="mail" value="<?= showMailWhenUpdatingContributor() ?>">
             <label for="password">mot de passe</label>
             <input type="password" name="password">
             <label for="password">confirmer mot de passe</label>

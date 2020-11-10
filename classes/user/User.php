@@ -129,7 +129,8 @@ class User extends Model
             header("location:inscription.php");
             die();
         }
-        elseif (intval($_SESSION["user"]["accreditation"]) !== 200) 
+
+        else
         
         {
             session_start();
@@ -407,21 +408,26 @@ class User extends Model
     * @param string
     * @return array
     */
-    public  function displayUsers($pseudo, $email)
+    public  function displayUsers($pseudo, $email, $role)
     {
 
         $sql = "SELECT * FROM `user` 
+                INNER JOIN `accreditation`
+                ON user.accreditation = accreditation.accreditation
                 WHERE pseudo_user like :pseudo 
-                or mail_user like :mail";
+                AND mail_user like :mail
+                AND nom_accreditation like :role";
 
         $result  = $this->pdo->prepare($sql);
 
        //concaténation pour le LIKE
        $pseudo="%".$pseudo."%";
        $email="%".$email."%";
+       $role="%".$role."%";
 
        $result->bindParam(":pseudo", $pseudo);
        $result->bindParam(":mail", $email);
+       $result->bindParam(":role", $role);
 
        $result->execute(); 
 
@@ -429,5 +435,32 @@ class User extends Model
  
        return $req;
    }
-         
+
+    /**
+    * supprime l'utilisateur
+    *
+    * @param string 
+    */
+   public function delete($id)
+   {
+
+       $result = $this->pdo->prepare("DELETE FROM `USER` WHERE id_user = :id");
+       
+      return  $result->execute([
+          "id" => $id
+      ]);
+
+    }
+
+    public function upgrade($id)
+    {
+        $req = $this->pdo->prepare("UPDATE `user` SET accreditation = 100 WHERE id_user = :id");
+        $req->execute([
+            "id" => $id
+        ]);
+        
+        session_start();
+        $_SESSION['upgrade'];
+        header("location:displayUsers.php");
+    }
 }

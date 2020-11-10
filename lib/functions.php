@@ -142,6 +142,20 @@ function displayEmailTakenOrIncomplete()
     } 
 }
 
+function incompleteSignIn($pseudo, $email, $password, $confirmPass)
+{
+    if(count($_POST) > 0 && empty($idpays) && empty($nom) && empty($prenom) && empty($date))
+    {
+
+        echo "remplissez tout les champs";
+    } 
+        
+        
+    
+}
+
+
+
 //USER SPACE **************************
 
 /**
@@ -175,35 +189,70 @@ function remember($resultat)
 //ADMIN  ********************
 
 /**
-* affiche le nom,prenom et pays dans la recherche 
+* affiche les infos des utilisateurs dans la recherche 
 */
 function display($user){
 
     //si au moin un POST est passe et que le button avec la valeur sub est activer alors on execute la recherche
     if(count($_POST) > 0 && isset($_POST['sub'])){
 
-        $req = $user->displayUsers($_POST["spseudo"], $_POST["smail"]);
+        $req = $user->displayUsers($_POST["spseudo"], $_POST["smail"], $_POST["srole"]);
         $result= [];
 
-        foreach($req as $key => $values){
-            
-            $result[] = 
-                    "<div class='display'>" . 
-                        "<p> <strong>id: </strong>" . $values["id_user"] . "<br>" .
-                        "<strong>pseudo: </strong> " . $values["pseudo_user"] . "<br>" . 
-                        "<strong>accreditation: </strong> " . $values["accreditation"] . "<br>" . 
-                        "<strong>mail: </strong> " . $values["mail_user"] .  "</p>" .
+        foreach($req as $key => $values)
+        {
+            $id = intval($values["id_user"]);
+            $pseudo = $values["pseudo_user"];
+            $accreditation = $values["nom_accreditation"];
+            $nAccreditation = intval($values["accreditation"]);
+            $mail = $values["mail_user"];
 
+            if($id !== 20 && $nAccreditation !== 1 )
+            {
+                $result[] = 
+                
+                    "<div class='display-users'>" . 
+                        "<p> <strong>id: </strong>" . $id . "<br>" .
+                        "<strong>pseudo: </strong> " . $pseudo . "<br>" . 
+                        "<strong>accreditation: </strong> " . $accreditation . "<br>" . 
+                        "<strong>mail: </strong> " . $mail .  "</p>".
+
+                       
                         "<form action='delete.php' method='post' name='suppr' >
                             <input type='hidden' name='id' value='".$values['id_user']."'>
                             <button name='delete' value=1 id='suppr' >supprimer</button>
                         </form> ".
-                        "<form action='inscription.php?id=".$values["id_user"]."' method='post'> 
-                            <button name='update' value=1>modifier</button> 
+                        
+                    "</div>";
+            }
+
+            if($nAccreditation === 1)
+            {
+                $result[] = 
+                
+                    "<div class='display-users'>" . 
+                        "<p> <strong>id: </strong>" . $id . "<br>" .
+                        "<strong>pseudo: </strong> " . $pseudo . "<br>" . 
+                        "<strong>accreditation: </strong> " . $accreditation . "<br>" . 
+                        "<strong>mail: </strong> " . $mail .  "</p>".
+
+                       
+                        "<form action='delete.php' method='post' name='suppr' >
+                            <input type='hidden' name='id' value='".$values['id_user']."'>
+                            <button name='delete' value=1 id='suppr' >supprimer</button>
+                        </form> ".
+                        
+
+                        "<form action='upgrade.php?id=".$values["id_user"]."' method='post'> 
+                            <button name='upgrade' value=1>upgrade</button> 
                         </form>". 
 
                     "</div>";
+            }
+
+            
         }
+            
         return $result;
     }
 }
@@ -237,5 +286,61 @@ function updateAndDeleteForAll($user)
     if(!isset($value["id_user"])){
 
         return;
+    }
+
+    
+
+}
+
+function showPseudoWhenUpdatingContributor()
+{
+    if(count($_GET) > 0 && isset($_GET["id"]))
+    {
+        $user = new User;
+        $req = $user->displayInfoWhenUpdatatingContributor(intval($_GET["id"]));
+
+        foreach($req as $key => $value)
+        {
+            echo $value["pseudo_user"];
+           
+        }
+    }
+}
+
+function showMailWhenUpdatingContributor()
+{
+    if(isset($_GET["id"]))
+    {
+        $user = new User;
+        $req = $user->displayInfoWhenUpdatatingContributor(intval($_GET["id"]));
+
+        foreach($req as $key => $value)
+        {
+            echo $value["mail_user"];
+        }
+    }
+}
+
+function treatments()
+{
+    if(isset($_SESSION["userDeleted"]))
+    {
+        echo $_SESSION["userDeleted"];
+    }
+
+    if(!isset($_SESSION["user"]))
+    {
+        session_start();
+        header("location:../user/connexion.php");
+        echo "page introuvable connectez-vous !!";
+    }
+    if(isset($_SESSION['suppr']))
+    {
+        echo $_SESSION['suppr'];
+    }
+
+    if(isset($_SESSION['upgrade']))
+    {
+        echo "utilisateur monté en grade";
     }
 }

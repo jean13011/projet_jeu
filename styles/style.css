@@ -21,9 +21,9 @@ a{
     height: 134px;
 }
 
-.form{
-    display: flex;
-    justify-content: center;
+.display {
+    display: flex!important;
+    justify-content: space-evenly!important;
 }
 
 .form-control{
@@ -32,4 +32,8 @@ a{
 
 .profilUser #deleteUser a{
     color: red;
+}
+
+body{
+    background-color: red;
 }

@@ -71,6 +71,7 @@
         <?php 
             displayIdenticalPasswordError();
             displayEmailTakenOrIncomplete();
+            incompleteSignIn($pseudo, $email, $password, $confirmPassword);
             
         ?>
         <form method="post" name="formSaisie">
