@@ -69,6 +69,7 @@
             <button type="submit" name="sub" value="2">envoyer</button>
         </form>
         <div class="display" style="display: flex; justify-content: space-evenly; margin-top: 53px">
+        
             <!-- ajoute un bouton supprimer et ajouter pour tout les users trouvé -->
             <?php updateAndDeleteForAll($user)?>
 

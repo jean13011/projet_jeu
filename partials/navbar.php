@@ -44,8 +44,8 @@
                     <li><a href="">Jeux vidéo</a></li>
                     <li><a href="">Accéssoires</a></li>
                     <li><a href="">Coup de (coeur)</a></li>
-                    <li><a href="#">Ajouter un produit</a></li>
-                    <li><a href="inscription.php">Ajouter contributeur</a></li>
+                    <li><a href="addProduct.php">Ajouter un produit</a></li>
+                    <li><a href="inscriptionContributorByAdmin.php">Ajouter contributeur</a></li>
                     <li><a href="displayUsers.php">Afficher tout les users</a></li>
                 <?php endif ?>
 
@@ -53,7 +53,7 @@
                     <li><a href="">Jeux vidéo</a></li>
                     <li><a href="">Accéssoires</a></li>
                     <li><a href="">Coup de (coeur)</a></li>
-                    <li><a href="#">Ajouter un produit</a></li>
+                    <li><a href="addProduct.php">Ajouter un produit</a></li>
                 <?php endif ?>
 
                 <?php if(isset($session) && $session === 1 || !isset($_SESSION["user"]))  : ?>

@@ -74,18 +74,21 @@
             incompleteSignIn($pseudo, $email, $password, $confirmPassword);
             
         ?>
-        <form method="post" name="formSaisie">
-            <label for="pseudo">pseudo</label>
-            <input type="text" name="pseudo">
-            <label for="mail">e-mail</label>
-            <input type="email" name="mail" >
-            <label for="password">mot de passe</label>
-            <input type="password" name="password">
-            <label for="password">confirmer mot de passe</label>
-            <input type="password" name="confirmPassword" >
-            <button type="submit">soumettre</button>
-            <a href="connexion.php">Se connecter</a>
-        </form>
+        <div class="form">
+            <form method="post" name="formSaisie">
+                <label for="pseudo">pseudo</label>
+                <input type="text" name="pseudo">
+                <label for="mail">e-mail</label>
+                <input type="email" name="mail" >
+                <label for="password">mot de passe</label>
+                <input type="password" name="password">
+                <label for="password">confirmer mot de passe</label>
+                <input type="password" name="confirmPassword" >
+                <button type="submit">soumettre</button>
+                <a href="connexion.php">Se connecter</a>
+            </form>
+        </div>
+        
         <script src="./fonctions.js"></script>
     </body>
 </html>

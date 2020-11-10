@@ -1,6 +1,7 @@
 <?php
-define('ROOT', __DIR__);
-define('DS', DIRECTORY_SEPARATOR);
+
+@define('ROOT', __DIR__);
+@define('DS', DIRECTORY_SEPARATOR);
 
 
 include_once (dirname(ROOT). DS."model/Model.php");

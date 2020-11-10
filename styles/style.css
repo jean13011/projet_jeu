@@ -34,6 +34,15 @@ a{
     color: red;
 }
 
-body{
-    background-color: red;
+
+.product{
+    display: flex!important;
+    justify-content: center!important;
+}
+
+.product form{
+    display: grid!important;
+    border: 3px solid black!important;
+    padding: 30px!important;
+    margin-bottom: 30px!important;
 }

@@ -5,22 +5,6 @@ include_once (dirname(dirname(ROOT))) . "/classes/user/User.php";
 $user = new User ;
 
 
-function regexPassword($input){
-        
-    $subject = $input;
-    $pattern = "/[0-9\&\"\'\(\-\_à\)=]/";
-
-    if(preg_match($pattern,$subject)){
-
-        return false;
-        
-    }else{
-        
-        return true;
-    }
-}
-
-
 /**
 * affiche le nom du jeu et son genre dans la recherche 
 */
@@ -68,6 +52,8 @@ function sessionsSignIn()
         die();
     } 
 
+    
+
 }
 
 /**
@@ -100,6 +86,11 @@ function sessionSignUp()
         echo $_SESSION["notConnected"];
         session_unset();
     }
+    
+    if(isset($_SESSION["alreadyConnected"]))
+    {
+        echo $_SESSION["alreadyConnected"];
+    }
 }
 
 /**
@@ -120,6 +111,7 @@ function displayIdenticalPasswordError()
         echo $_SESSION["tooShort"];
         session_unset();
     }
+ 
 }
 
 /**
