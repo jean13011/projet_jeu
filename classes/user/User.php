@@ -15,6 +15,15 @@ class User extends Model
     private int  $accreditation = 1 ;
 
     
+    public function __construct(string $p='', string $m='', string $ps='')
+    {
+
+        $this->pseudo=$p;
+        $this->email=$m;
+        $this->password=$ps;
+        parent::__construct();
+    }
+
     /**
      * Get the value of pseudo
      *
@@ -69,20 +78,13 @@ class User extends Model
         return $this;
     }
 
-    public function __construct(string $p='', string $m='', string $ps='')
-    {
-
-        $this->pseudo=$p;
-        $this->email=$m;
-        $this->password=$ps;
-        parent::__construct();
-    }
+   
 
 
     //INSCRIPTION USER ***********************************************
 
     /**
-     * confirme le mot de passe si c'est bon on insert
+     * confirm the password if both password are corresponding we can continue
      *
      * @param string $password
      * 
@@ -110,7 +112,7 @@ class User extends Model
     }
 
     /**
-     * vérification e-mail deja utilisé ou non
+     * check if the mail is already used 
      * 
     */
     public function checkMailForSignUp()
@@ -143,7 +145,7 @@ class User extends Model
     
 
     /**
-     * encodage du mot de passe
+     * hashing password
      * 
      * 
      * @return string password_hash 
@@ -156,7 +158,7 @@ class User extends Model
     }
 
     /**
-     * insertion dans la base de données
+     * insert all datas in the DB 
      * 
      * @param password_hash
      * 
@@ -185,10 +187,9 @@ class User extends Model
     //CONNEXION USER ***************************************
 
     /**
-     * verification mail dans la base de données 
+     * check the mail in the DB
      * 
-     * @return array|false retourne un tableau avec 1 
-     * utilisateur ou false si il ne trouve rien
+     * @return array
     */
     public function checkMailForSignIn()
     {
@@ -205,15 +206,10 @@ class User extends Model
     }
 
     /**
-     * Comparaison du pass envoyé via le formulaire avec la base 
+     * comparing the enter password in the DB to see if its matching
      * 
-     * @var bool $isPasswordCorrect verification mot de passe auprès de la Bdd 
+     * @var bool $isPasswordCorrect check data in DB 
      * 
-     * @param array|false $resultat Le resultat retourné par la fonction userInput() qui contient un utilisateur ou rien 
-     * 
-     * @param array $input un array de type $_POST
-     * 
-     * @param void
     */
     public function comparePasswordInDB($resultat)
     {
@@ -248,7 +244,7 @@ class User extends Model
     }
 
     /**
-    * l'utilisateur rentre une recherche et on etablie le lien avec la bdd
+    * search in the searchbar
     * 
     * @return array
     */
@@ -266,7 +262,7 @@ class User extends Model
     //UPDATE USER ******************************************
 
     /**
-     * vérifie dans la bdd les données liée a l'id rentré
+     * check in DB all infos for the id entered
      * 
      * @return array $resultat pour la comparaison
      * 
@@ -286,8 +282,7 @@ class User extends Model
     }
 
     /**
-     * match du pass rentrée avec le $resultat de la fonction précedente
-     
+     * change de password if is not identical to the old one
      * 
      * @param $resultat qui renvoi true|false selon la reponse
      * 
@@ -338,7 +333,7 @@ class User extends Model
     }
 
     /**
-     * renvoie vers le profil si le mot de passe est changé
+     * send to home.php if the previous action is good
      *
      * @param bool $req
      */
@@ -358,7 +353,7 @@ class User extends Model
     } 
 
     /**
-     * modifier le pseudo de l'utilisateur
+     * update the pseudo 
      */
     public function changePseudo()
     {
@@ -385,7 +380,7 @@ class User extends Model
     }
 
     /**
-     * supprime l'utilisateur 
+     * delete the user
      */
     public function deleteUser()
     {
@@ -403,13 +398,16 @@ class User extends Model
             $_SESSION["userDeleted"] = "compte supprimé";
             header("location:inscription.php");
     }  
+
+    //Admin ***********************************************
     
     /**
-    * l'utilisateur rentre un nom ou un prenom ou un pays et on le trouve dans la bdd
+    * enter a name or role and it find all user corresponding to the search
     * @param string
+    *
     * @return array
     */
-    public  function displayUsers($pseudo, $email, $role)
+    public  function findUsers($pseudo, $email, $role)
     {
 
         $sql = "SELECT * FROM `user` 
@@ -438,7 +436,7 @@ class User extends Model
    }
 
     /**
-    * supprime l'utilisateur
+    * delete the user 
     *
     * @param string 
     */
@@ -453,6 +451,11 @@ class User extends Model
 
     }
 
+    /**
+     * upgrade the lambda user
+     * 
+     * @param int id
+     */
     public function upgrade($id)
     {
         $req = $this->pdo->prepare("UPDATE `user` SET accreditation = 100 WHERE id_user = :id");

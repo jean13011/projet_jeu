@@ -42,8 +42,7 @@
         $user->setEmail($email);
         $user->setPassword($password);
         $resultat = $user->checkMailForSignIn();
-        $user->comparePasswordInDB($resultat); 
-            
+        $user->comparePasswordInDB($resultat);  
     }
 
     if(isset($_POST["rememberMe"]))

@@ -2,9 +2,9 @@
 define('ROOT', __DIR__);
 define('DS', DIRECTORY_SEPARATOR);
 
-include_once dirname(ROOT) . DS. "game/Game.php";
+include_once dirname(ROOT) . DS. "model/Model.php";
 
-class Genre extends Game
+class Category extends Model
 {
 
     private string $nameGenre;
@@ -14,7 +14,7 @@ class Genre extends Game
      * 
      * @return array
      */
-    public function displayGenre()
+    public function showAllCategories()
     {
         $req = $this->pdo->prepare("SELECT * FROM `genre` ORDER BY libelle_genre ASC ");
         $req->execute();

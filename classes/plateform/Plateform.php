@@ -3,9 +3,9 @@
 @define('ROOT', __DIR__);
 @define('DS', DIRECTORY_SEPARATOR);
 
-include_once dirname(ROOT) . DS. "game/Game.php";
+include_once dirname(ROOT) . DS. "model/Model.php";
 
-class Plateform extends Game
+class Plateform extends Model
 {
 
     private string $namePlateform;
@@ -15,7 +15,7 @@ class Plateform extends Game
      * 
      * @return array
      */
-    public function displayPlateform()
+    public function showAllPlateforms()
     {
         $req = $this->pdo->prepare("SELECT * FROM `plateforme` ORDER BY libelle_plateforme ASC ");
         $req->execute();

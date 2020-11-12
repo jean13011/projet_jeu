@@ -47,15 +47,16 @@
 
         $user = new User;
         $req = $user->delete($id);
+        
+        
     }
-
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
     <?php 
         require_once ("../../partials/header.php");
-        treatments();
+        securityForSuperAdmin();
     ?>
         
         <h2>recherchez un utilisateur</h2>

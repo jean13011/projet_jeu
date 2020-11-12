@@ -6,7 +6,7 @@ $user = new User ;
 
 
 /**
-* affiche le nom du jeu et son genre dans la recherche 
+* show all infos for the searching game 
 */
 function displayGames($user){
 
@@ -181,14 +181,14 @@ function remember($resultat)
 //ADMIN  ********************
 
 /**
-* affiche les infos des utilisateurs dans la recherche 
+* show all info of ther users
 */
-function display($user){
+function showUser($user){
 
     //si au moin un POST est passe et que le button avec la valeur sub est activer alors on execute la recherche
     if(count($_POST) > 0 && isset($_POST['sub'])){
 
-        $req = $user->displayUsers($_POST["spseudo"], $_POST["smail"], $_POST["srole"]);
+        $req = $user->findUsers($_POST["spseudo"], $_POST["smail"], $_POST["srole"]);
         $result= [];
 
         foreach($req as $key => $values)
@@ -250,7 +250,7 @@ function display($user){
 }
 
 /**
- * ajoute un bouton modifier et supprimer a tout les joueurs trouvé 
+ * add a delete button and upgrade button for lambda users
  * 
  * @param object
  */
@@ -260,7 +260,7 @@ function updateAndDeleteForAll($user)
     if($user){
             
         //affichage des recherche
-        $value = display($user);
+        $value = showUser($user);
 
     }
 
@@ -284,34 +284,9 @@ function updateAndDeleteForAll($user)
 
 }
 
-function showPseudoWhenUpdatingContributor()
-{
-    if(count($_GET) > 0 && isset($_GET["id"]))
-    {
-        $user = new User;
-        $req = $user->displayInfoWhenUpdatatingContributor(intval($_GET["id"]));
-
-        foreach($req as $key => $value)
-        {
-            echo $value["pseudo_user"];
-           
-        }
-    }
-}
-
-function showMailWhenUpdatingContributor()
-{
-    if(isset($_GET["id"]))
-    {
-        $user = new User;
-        $req = $user->displayInfoWhenUpdatatingContributor(intval($_GET["id"]));
-
-        foreach($req as $key => $value)
-        {
-            echo $value["mail_user"];
-        }
-    }
-}
+/**
+ * simple conditions for home in the super admin interface
+ */
 
 function treatments()
 {
@@ -335,4 +310,15 @@ function treatments()
     {
         echo "utilisateur monté en grade";
     }
+}
+
+function securityForSuperAdmin()
+{
+    if(!isset($_SESSION["connected"]) && $_SESSION["user"]["accreditation"] !== 200)
+    {
+        session_start();
+        header("location:../user/connexion.php");
+        echo "page introuvable connectez-vous !!";
+    }
+    
 }
