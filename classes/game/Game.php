@@ -173,6 +173,7 @@ class Game extends Model
     }
 
 
+
     
 /**
  * insert the new game in DB 
@@ -182,8 +183,8 @@ class Game extends Model
     public function insertNewGame($game)
     {
 
-        $sql = "INSERT INTO `jeu` (nom_jeu, libelle_jeu, createur_jeu, studio_jeu, langue_jeu, genre_jeu, libelle_plateforme, commentaire, note) 
-                VALUES (:name, :libelleGame, :creator, :studio, :traduction, :category, :plateform, :commentary, :note)
+        $sql = "INSERT INTO `jeu` (nom_jeu, libelle_jeu, createur_jeu, studio_jeu, langue_jeu, genre_jeu, libelle_plateforme, commentaire, note, id_img) 
+                VALUES (:name, :libelleGame, :creator, :studio, :traduction, :category, :plateform, :commentary, :note, :img)
                 ";
         $req= $this->pdo->prepare($sql);
         $req->execute([
@@ -196,7 +197,23 @@ class Game extends Model
             "plateform" => $this->plateform,
             "commentary" => $this->commentary,
             "note" => $this->note,
+            "img" => $this->insertNewImage()
         ]);
-        return true;
+    }
+
+    /**
+     * 
+     */
+    public function insertNewImage()
+    {
+        $name = $_FILES['image']['name'];
+        $image = $_FILES['image']['tmp_name'];
+        $path = file_get_contents($image);
+
+        $req = $this->pdo->prepare("INSERT INTO `img` (nom_img, path_img) VALUES (:name, :path)");
+        $req->execute([
+            "name" => $name,
+            "path" => $path
+        ]);
     }
 }

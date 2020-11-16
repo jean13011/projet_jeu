@@ -314,7 +314,7 @@ function treatments()
 
 function securityForSuperAdmin()
 {
-    if(!isset($_SESSION["connected"]) && $_SESSION["user"]["accreditation"] !== 200)
+    if(!isset($_SESSION["connected"]) || $_SESSION["user"]["accreditation"] <= 100 )
     {
         session_start();
         header("location:../user/connexion.php");
@@ -322,3 +322,4 @@ function securityForSuperAdmin()
     }
     
 }
+

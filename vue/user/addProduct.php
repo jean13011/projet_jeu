@@ -17,6 +17,8 @@
     $note = filter_input(INPUT_POST, 'note', FILTER_DEFAULT);
     
     $title = $_SERVER["SCRIPT_NAME"];
+    var_dump($_FILES);
+
    
     $error = [];
    
@@ -84,13 +86,13 @@
         $error []= false;
     }
 
-    
 
     
     if(!in_array(false, $error))
     {
         $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, intval($note));
-        $game->insertNewGame($game);   
+        $game->insertNewGame($game); 
+        $game->insertNewImage();
     }
 
     $category = new Category();
@@ -98,6 +100,7 @@
     $listeCategory = $category->showAllCategories();
     $listePlateform = $plateform->showAllPlateforms();
     securityForSuperAdmin();
+    
         
 ?>
 
@@ -109,7 +112,7 @@
     <br>
 
     <div class="product" >
-        <form method="post" >
+        <form method="post" enctype="multipart/form-data">
             <h2>entrez un jeu</h2>
             <br>
             <label for="acronyme">Acronyme jeu </label>
@@ -141,13 +144,18 @@
             <textarea rows="4" cols="50" name="commentaire" placeholder="Entrez votre commentaire ici..."></textarea>
             <label for="note">note</label>
             <select name="note" id="">
-                <?php for ($i=0; $i <= 20; $i++) :?>
+                <?php for ($i = 1 ; $i <= 20; $i++) :?>
                 <option value="<?= $i ?>"><?= $i ?></option>
                 <?php endfor?>
             </select>
             <br>
+            <input type="hidden" name="MAX_FILE_SIZE" value="250000"/>
+            <label for="image">ajoutez une image</label>
+            <input type="file" name="image" size=50/>
+            <br>
             <button type="submit">soumettre</button>
-        </form>
+            
+        </form>  
     </div>
     
 </body>
