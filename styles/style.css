@@ -46,3 +46,12 @@ a{
     padding: 30px!important;
     margin-bottom: 30px!important;
 }
+
+.list-group{
+    flex-direction: none!important;
+}
+
+.list-group .container{
+    border: solid black 2px!important;
+    width: 750px!important;
+}

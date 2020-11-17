@@ -15,7 +15,6 @@
 
     $title = $_SERVER["SCRIPT_NAME"];
 
-    var_dump($_SESSION);
 
 
 ?>

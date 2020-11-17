@@ -41,7 +41,7 @@
         <div>
             <ul>
                 <?php if(isset($session) && $session === 200) : ?>
-                    <li><a href="">Jeux vidéo</a></li>
+                    <li><a href="games.php">Jeux vidéo</a></li>
                     <li><a href="">Accéssoires</a></li>
                     <li><a href="">Coup de (coeur)</a></li>
                     <li><a href="addProduct.php">Ajouter un produit</a></li>
@@ -50,14 +50,14 @@
                 <?php endif ?>
 
                 <?php if(isset($session) && $session === 100) : ?>
-                    <li><a href="">Jeux vidéo</a></li>
+                    <li><a href="games.php">Jeux vidéo</a></li>
                     <li><a href="">Accéssoires</a></li>
                     <li><a href="">Coup de (coeur)</a></li>
                     <li><a href="addProduct.php">Ajouter un produit</a></li>
                 <?php endif ?>
 
                 <?php if(isset($session) && $session === 1 || !isset($_SESSION["user"]))  : ?>
-                    <li><a href="">Jeux vidéo</a></li>
+                    <li><a href="games.php">Jeux vidéo</a></li>
                     <li><a href="">Accéssoires</a></li>
                     <li><a href="">Coup de (coeur)</a></li>
                 <?php endif ?>

@@ -16,8 +16,10 @@ class Game extends Model
     private string $plateform;
     private string $commentary;
     private int $note;
+    private string $name_img;
+    private string $path_img;
 
-    public function __construct(string $n, string $lg, string $c, string $s, string $t, string $cat, string $p, string $com, int $not)
+    public function __construct(string $n, string $lg, string $c, string $s, string $t, string $cat, string $p, string $com, int $not, string $ni, string $pi)
     {
 
         $this->name=$n;
@@ -29,6 +31,8 @@ class Game extends Model
         $this->plateform=$p;
         $this->commentary=$com;
         $this->note=$not;
+        $this->name_img=$ni;
+        $this->path_img=$pi;
         parent::__construct();
     }
 
@@ -66,7 +70,7 @@ class Game extends Model
      *
      * @return  self
     */ 
-    public function setLibelleGame($libelleGame)
+    public function setLibelleGame($libelleGame) 
     {
         $this->libelleGame = $libelleGame;
         return $this;
@@ -172,9 +176,6 @@ class Game extends Model
         return $this;
     }
 
-
-
-    
 /**
  * insert the new game in DB 
  * 
@@ -183,10 +184,10 @@ class Game extends Model
     public function insertNewGame($game)
     {
 
-        $sql = "INSERT INTO `jeu` (nom_jeu, libelle_jeu, createur_jeu, studio_jeu, langue_jeu, genre_jeu, libelle_plateforme, commentaire, note, id_img) 
-                VALUES (:name, :libelleGame, :creator, :studio, :traduction, :category, :plateform, :commentary, :note, :img)
+        $sql = "INSERT INTO `jeu` (nom_jeu, libelle_jeu, createur_jeu, studio_jeu, langue_jeu, genre_jeu, libelle_plateforme, commentaire, note, nom_img, path_img) 
+                VALUES (:name, :libelleGame, :creator, :studio, :traduction, :category, :plateform, :commentary, :note, :image, :path)
                 ";
-        $req= $this->pdo->prepare($sql);
+        $req = $this->pdo->prepare($sql);
         $req->execute([
             "name" => $this->name,
             "libelleGame" => $this->libelleGame,
@@ -197,23 +198,10 @@ class Game extends Model
             "plateform" => $this->plateform,
             "commentary" => $this->commentary,
             "note" => $this->note,
-            "img" => $this->insertNewImage()
+            "image" => $this->name_img,
+            "path" => $this->path_img
         ]);
     }
 
-    /**
-     * 
-     */
-    public function insertNewImage()
-    {
-        $name = $_FILES['image']['name'];
-        $image = $_FILES['image']['tmp_name'];
-        $path = file_get_contents($image);
-
-        $req = $this->pdo->prepare("INSERT INTO `img` (nom_img, path_img) VALUES (:name, :path)");
-        $req->execute([
-            "name" => $name,
-            "path" => $path
-        ]);
-    }
+    
 }

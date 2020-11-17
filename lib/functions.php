@@ -1,8 +1,9 @@
 <?php 
 
 include_once (dirname(dirname(ROOT))) . "/classes/user/User.php";
+include_once (dirname(dirname(ROOT))) . "/classes/game/Game.php";
 
-$user = new User ;
+$user = new User() ;
 
 
 /**
@@ -177,6 +178,8 @@ function remember($resultat)
 
     return true;
 }
+
+
 
 //ADMIN  ********************
 

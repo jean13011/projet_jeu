@@ -15,10 +15,11 @@
     $plateform = filter_input(INPUT_POST, 'plateforme', FILTER_DEFAULT);
     $commentary = filter_input(INPUT_POST, 'commentaire', FILTER_DEFAULT);
     $note = filter_input(INPUT_POST, 'note', FILTER_DEFAULT);
+    $name_img = $_FILES['image']['name'];
+    $path_img = $_FILES['image']['tmp_name'];
+    
     
     $title = $_SERVER["SCRIPT_NAME"];
-    var_dump($_FILES);
-
    
     $error = [];
    
@@ -86,13 +87,36 @@
         $error []= false;
     }
 
+    if($name_img)
+    {
+        $error[] = true;
 
+    }else{
+
+        $error []= false;
+    }
+
+    if($path_img)
+    {
+        $error[] = true;
+
+    }else{
+
+        $error []= false;
+    }
+
+    var_dump($error);
     
     if(!in_array(false, $error))
     {
-        $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, intval($note));
+        $name_img = $_FILES['image']['name'];
+        $path_img = $_FILES['image']['tmp_name'];
+        
+        var_dump(dirname(dirname(__DIR__)) . "/img-storage" );
+        $image = copy($path_img, dirname(dirname(__DIR__)) . "/img-storage/" . $name_img);
+        
+        $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, intval($note), $name_img, $path_img);
         $game->insertNewGame($game); 
-        $game->insertNewImage();
     }
 
     $category = new Category();
@@ -101,7 +125,8 @@
     $listePlateform = $plateform->showAllPlateforms();
     securityForSuperAdmin();
     
-        
+        //header("Content-Type: image/jpeg");
+        //header("Content-Length: " .(string)(filesize($sImage)) );
 ?>
 
 <!DOCTYPE html>
@@ -126,7 +151,7 @@
             <label for="langue">Langues</label>
             <input type="text" name="langue">
             <br>
-            <label for="genre">categorie </label>
+            <label for="genre">categorie</label>
             <select name="genre">
                <?php foreach($listeCategory as $key => $value) : ?>
                     <option value="<?= $value["libelle_genre"] ?>"><?= $value["libelle_genre"] ?></option>
