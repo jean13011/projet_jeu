@@ -1,11 +1,17 @@
+
+body{
+    background-color: gray;
+}
+
+/* navbar */
 .menu{
-    border: 1px solid black!important;
-    width: 100%!important;
+    border: 1px solid black;
+    width: 100%;
 }
 
 .menu div ul{
-    display: flex!important;
-    justify-content: space-between!important;
+    display: flex;
+    justify-content: space-between;
 } 
 
 li{
@@ -17,41 +23,68 @@ a{
 }
 
 .bg-dark {
-    background-color: #343a40!important;
+    background-color: #343a40;
     height: 134px;
 }
 
 .display {
-    display: flex!important;
-    justify-content: space-evenly!important;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .form-control{
-    width: 16%!important;
+    width: 16%;
 }
 
+/* editing profil */
 .profilUser #deleteUser a{
     color: red;
 }
 
+/* product card */
+
+.card{
+    border: none!important;
+}
 
 .product{
-    display: flex!important;
-    justify-content: center!important;
+    display: flex;
+    justify-content: center;
 }
 
 .product form{
-    display: grid!important;
-    border: 3px solid black!important;
-    padding: 30px!important;
-    margin-bottom: 30px!important;
+    display: grid;
+    border: 3px solid black;
+    padding: 30px;
+    margin-bottom: 30px;
 }
 
-.list-group{
-    flex-direction: none!important;
+.card .list-group img{
+    margin-left: 32px; 
+    padding: 14px;
 }
 
-.list-group .container{
-    border: solid black 2px!important;
-    width: 750px!important;
+.card .list-group{
+    flex-direction: unset; 
+    border: solid black 15px; 
+    border-radius: 100px 1px / 120px;
+}
+
+/* CONNEXION*/
+
+#form{
+    display: flex;
+    justify-content: center;
+}
+
+#form form{
+    width: 15%;
+}
+
+#form form #send button {
+    margin-left: 36px;
+}
+
+#form form a {
+    margin-left: 25px;
 }

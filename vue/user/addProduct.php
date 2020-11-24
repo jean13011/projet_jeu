@@ -15,15 +15,10 @@
     $plateform = filter_input(INPUT_POST, 'plateforme', FILTER_DEFAULT);
     $commentary = filter_input(INPUT_POST, 'commentaire', FILTER_DEFAULT);
     $note = filter_input(INPUT_POST, 'note', FILTER_DEFAULT);
-    $name_img = $_FILES['image']['name'];
-    $path_img = $_FILES['image']['tmp_name'];
-    
     
     $title = $_SERVER["SCRIPT_NAME"];
    
     $error = [];
-   
-
     if($name)
     {
         $error[] = true;
@@ -86,37 +81,27 @@
 
         $error []= false;
     }
-
-    if($name_img)
-    {
-        $error[] = true;
-
-    }else{
-
-        $error []= false;
-    }
-
-    if($path_img)
-    {
-        $error[] = true;
-
-    }else{
-
-        $error []= false;
-    }
-
-    var_dump($error);
     
     if(!in_array(false, $error))
     {
         $name_img = $_FILES['image']['name'];
         $path_img = $_FILES['image']['tmp_name'];
         
-        var_dump(dirname(dirname(__DIR__)) . "/img-storage" );
         $image = copy($path_img, dirname(dirname(__DIR__)) . "/img-storage/" . $name_img);
         
-        $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, intval($note), $name_img, $path_img);
-        $game->insertNewGame($game); 
+        
+        if($_FILES["image"]["error"] === 0 )
+        {
+            $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, intval($note), $name_img, $path_img);
+            $game->insertNewGame($game);
+        }
+
+        else
+        {
+            echo "photo trop volumineuse";
+            
+        }
+            
     }
 
     $category = new Category();
@@ -124,9 +109,7 @@
     $listeCategory = $category->showAllCategories();
     $listePlateform = $plateform->showAllPlateforms();
     securityForSuperAdmin();
-    
-        //header("Content-Type: image/jpeg");
-        //header("Content-Length: " .(string)(filesize($sImage)) );
+    var_dump($_FILES);
 ?>
 
 <!DOCTYPE html>
