@@ -6,15 +6,15 @@
     require_once '../../classes/game/Game.php';
     require_once '../../lib/functions.php';
 
-    $name = filter_input(INPUT_POST, 'acronyme', FILTER_DEFAULT);
-    $libelleGame = filter_input(INPUT_POST, 'nom', FILTER_DEFAULT);
-    $creator = filter_input(INPUT_POST, 'createur', FILTER_DEFAULT);
-    $studio = filter_input(INPUT_POST, 'studio', FILTER_DEFAULT);
-    $traduction = filter_input(INPUT_POST, 'langue', FILTER_DEFAULT);
-    $category = filter_input(INPUT_POST, 'genre', FILTER_DEFAULT);
-    $plateform = filter_input(INPUT_POST, 'plateforme', FILTER_DEFAULT);
-    $commentary = filter_input(INPUT_POST, 'commentaire', FILTER_DEFAULT);
-    $note = filter_input(INPUT_POST, 'note', FILTER_DEFAULT);
+    $name = filter_input(INPUT_POST, 'acronyme');
+    $libelleGame = filter_input(INPUT_POST, 'nom');
+    $creator = filter_input(INPUT_POST, 'createur');
+    $studio = filter_input(INPUT_POST, 'studio');
+    $traduction = filter_input(INPUT_POST, 'langue');
+    $category = filter_input(INPUT_POST, 'genre');
+    $plateform = filter_input(INPUT_POST, 'plateforme');
+    $commentary = filter_input(INPUT_POST, 'commentaire');
+    $note = filter_input(INPUT_POST, 'note');
     
     $title = $_SERVER["SCRIPT_NAME"];
    
@@ -82,7 +82,7 @@
         $error []= false;
     }
     
-    if(!in_array(false, $error))
+    if(!in_array(false, $error, true))
     {
         $name_img = $_FILES['image']['name'];
         $path_img = $_FILES['image']['tmp_name'];
@@ -92,7 +92,7 @@
         
         if($_FILES["image"]["error"] === 0 )
         {
-            $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, intval($note), $name_img, $path_img);
+            $game = new Game($name, $libelleGame, $creator, $studio, $traduction, $category, $plateform, $commentary, (int)$note, $name_img, $path_img);
             $game->insertNewGame($game);
         }
 
@@ -109,7 +109,6 @@
     $listeCategory = $category->showAllCategories();
     $listePlateform = $plateform->showAllPlateforms();
     securityForSuperAdmin();
-    var_dump($_FILES);
 ?>
 
 <!DOCTYPE html>

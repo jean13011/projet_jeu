@@ -14,12 +14,10 @@ class Category extends Model
      * 
      * @return array
      */
-    public function showAllCategories()
+    public function showAllCategories(): array
     {
         $req = $this->pdo->prepare("SELECT * FROM `genre` ORDER BY libelle_genre ASC ");
         $req->execute();
-        $result = $req->fetchAll();
-
-        return $result;
+        return $req->fetchAll();
     }
 }

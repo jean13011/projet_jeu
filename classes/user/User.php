@@ -28,7 +28,7 @@ class User extends Model
      * Get the value of pseudo
      *
     */ 
-    public function getPseudo()
+    public function getPseudo(): string
     {
         return $this->pseudo;
     }
@@ -36,9 +36,10 @@ class User extends Model
     /**
      * Set the value of pseudo
      *
+     * @param $pseudo
      * @return  self
-    */ 
-    public function setPseudo($pseudo)
+     */
+    public function setPseudo($pseudo): self
     {
         $this->pseudo = $pseudo;
         return $this;
@@ -47,7 +48,7 @@ class User extends Model
     /**
      * Get the value of email
     */ 
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -57,7 +58,7 @@ class User extends Model
      *
      * @return  self
     */ 
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -67,12 +68,12 @@ class User extends Model
     /**
      * Get the value of password
     */ 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword($password)
+    public function setPassword($password): \User
     {
         $this->password = $password;
         return $this;
@@ -87,12 +88,12 @@ class User extends Model
      * confirm the password if both password are corresponding we can continue
      *
      * @param string $password
-     * 
+     *
      * @param string $confirmPassword
-     * 
+     *
      * @return bool
      */
-    public function comparePassword($password, $confirmPassword)
+    public function comparePassword(string $password, string $confirmPassword): bool
     {
         if($password !== $confirmPassword)
         {
@@ -115,7 +116,7 @@ class User extends Model
      * check if the mail is already used 
      * 
     */
-    public function checkMailForSignUp()
+    public function checkMailForSignUp(): void
     {
 
         $req = $this->pdo->prepare("SELECT * FROM `user` WHERE mail_user = :mail OR pseudo_user = :pseudo");
@@ -150,25 +151,21 @@ class User extends Model
      * 
      * @return string password_hash 
     */
-     public function hashPassword()
+     public function hashPassword(): string
      {
-        $passHash = password_hash($this->password, PASSWORD_DEFAULT);
-
-        return $passHash;
+         return password_hash($this->password, PASSWORD_DEFAULT);
     }
 
     /**
-     * insert all datas in the DB 
-     * 
+     * insert all datas in the DB
+     *
      * @param password_hash
-     * 
-     * @param object $user
-     *  
-    */ 
-    public function insertNewUser($passHash, $user)
+     *
+     */
+    public function insertNewUser($passHash): void
     {
 
-        if(isset($_SESSION["user"]["accreditation"]) && intval($_SESSION["user"]["accreditation"]) === 200)
+        if(isset($_SESSION["user"]["accreditation"]) && (int)$_SESSION["user"]["accreditation"] === 200)
         {
             
             $this->accreditation = 100;
@@ -191,7 +188,7 @@ class User extends Model
      * 
      * @return array
     */
-    public function checkMailForSignIn()
+    public function checkMailForSignIn(): array
     {
 
     
@@ -211,7 +208,7 @@ class User extends Model
      * @var bool $isPasswordCorrect check data in DB 
      * 
     */
-    public function comparePasswordInDB($resultat)
+    public function comparePasswordInDB($resultat): void
     {
 
         if (is_array($resultat))
@@ -248,7 +245,7 @@ class User extends Model
     * 
     * @return array
     */
-    public function articles($input)
+    public function articles($input): array
     {
 
         $sql = 'SELECT libelle_jeu, genre_jeu, libelle_plateforme FROM jeu WHERE libelle_jeu LIKE "%'.$input.'%" OR genre_jeu like "%'.$input.'%" ORDER BY id_jeu DESC ';
@@ -268,7 +265,7 @@ class User extends Model
      * 
      * @return false if error
      */
-    public function checkId()
+    public function checkId(): array
     {
 
         $userId = $_SESSION["user"]["id_user"];
@@ -283,13 +280,14 @@ class User extends Model
 
     /**
      * change de password if is not identical to the old one
-     * 
+     *
      * @param $resultat qui renvoi true|false selon la reponse
-     * 
-     * @param string  $passHash
-     * 
+     *
+     * @param string $passHash
+     *
+     * @return bool
      */
-    public function changePassword($resultat, $passHash)
+    public function changePassword($resultat, string $passHash): bool
     {
         if (is_array($resultat)) 
         {
@@ -337,7 +335,7 @@ class User extends Model
      *
      * @param bool $req
      */
-    public function addedPassword($req)
+    public function addedPassword($req): void
     {
 
         if ($req == true)
@@ -355,7 +353,7 @@ class User extends Model
     /**
      * update the pseudo 
      */
-    public function changePseudo()
+    public function changePseudo(): void
     {
         
         if($_POST["currentPseudo"] !== $this->pseudo)
@@ -382,7 +380,7 @@ class User extends Model
     /**
      * delete the user
      */
-    public function deleteUser()
+    public function deleteUser(): void
     {
         
             $userId = $_SESSION["user"]["id_user"];
@@ -400,14 +398,15 @@ class User extends Model
     }  
 
     //Admin ***********************************************
-    
+
     /**
-    * enter a name or role and it find all user corresponding to the search
-    * @param string
-    *
-    * @return array
-    */
-    public  function findUsers($pseudo, $email, $role)
+     * enter a name or role and it find all user corresponding to the search
+     * @param $pseudo
+     * @param $email
+     * @param $role
+     * @return array
+     */
+    public  function findUsers($pseudo, $email, $role): array
     {
 
         $sql = "SELECT * FROM `user` 
@@ -428,19 +427,18 @@ class User extends Model
        $result->bindParam(":mail", $email);
        $result->bindParam(":role", $role);
 
-       $result->execute(); 
+       $result->execute();
 
-       $req = $result->fetchAll();
- 
-       return $req;
+        return $result->fetchAll();
    }
 
     /**
-    * delete the user 
-    *
-    * @param string 
-    */
-   public function delete($id)
+     * delete the user
+     *
+     * @param string
+     * @return bool
+     */
+   public function delete($id): bool
    {
 
        $result = $this->pdo->prepare("DELETE FROM `USER` WHERE id_user = :id");
@@ -456,7 +454,7 @@ class User extends Model
      * 
      * @param int id
      */
-    public function upgrade($id)
+    public function upgrade($id): void
     {
         $req = $this->pdo->prepare("UPDATE `user` SET accreditation = 100 WHERE id_user = :id");
         $req->execute([

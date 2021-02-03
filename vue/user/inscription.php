@@ -59,7 +59,7 @@
         $req = $user->comparePassword($password, $confirmPassword);
         $user->checkMailForSignUp();
         $pass = $user->hashPassword();
-        $user->insertNewUser($pass, $user);
+        $user->insertNewUser($pass);
     }
 
 ?>

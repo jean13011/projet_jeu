@@ -5,7 +5,7 @@ abstract class Model
 {
     private string $host;
     private string $dbname;
-    protected $pdo;
+    protected PDO $pdo;
 
     public function __construct()
     {
@@ -18,7 +18,7 @@ abstract class Model
     /**
      * Database connection
      */
-    protected function connection()
+    protected function connection(): PDO
     {
         $dsn = "mysql:host=$this->host;dbname=$this->dbname";
         $username = "root";

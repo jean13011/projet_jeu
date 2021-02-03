@@ -40,7 +40,7 @@ class Game extends Model
      * Get the value of name
      *
     */ 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -48,9 +48,10 @@ class Game extends Model
     /**
      * Set the value of name
      *
+     * @param $name
      * @return  self
-    */ 
-    public function setName($name)
+     */
+    public function setName($name): self
     {
         $this->name = $name;
         return $this;
@@ -60,7 +61,7 @@ class Game extends Model
      * Get the value of libelle
      *
     */ 
-    public function getLibelleGame()
+    public function getLibelleGame(): string
     {
         return $this->libelleGame;
     }
@@ -68,9 +69,10 @@ class Game extends Model
     /**
      * Set the value of libelleGame
      *
+     * @param $libelleGame
      * @return  self
-    */ 
-    public function setLibelleGame($libelleGame) 
+     */
+    public function setLibelleGame($libelleGame): Game
     {
         $this->libelleGame = $libelleGame;
         return $this;
@@ -80,7 +82,7 @@ class Game extends Model
      * Get the value of creator
      *
     */ 
-    public function getCreator()
+    public function getCreator(): string
     {
         return $this->creator;
     }
@@ -88,9 +90,10 @@ class Game extends Model
     /**
      * Set the value of creator
      *
+     * @param $creator
      * @return  self
-    */ 
-    public function setCreator($creator)
+     */
+    public function setCreator($creator): Game
     {
         $this->creator = $creator;
         return $this;
@@ -100,7 +103,7 @@ class Game extends Model
      * Get the value of studio
      *
     */ 
-    public function getStudio()
+    public function getStudio(): string
     {
         return $this->studio;
     }
@@ -108,9 +111,10 @@ class Game extends Model
     /**
      * Set the value of studio
      *
+     * @param $studio
      * @return  self
-    */ 
-    public function setStudio($studio)
+     */
+    public function setStudio($studio): self
     {
         $this->studio = $studio;
         return $this;
@@ -120,7 +124,7 @@ class Game extends Model
      * Get the value of traduction
      *
     */ 
-    public function getTraduction()
+    public function getTraduction(): string
     {
         return $this->traduction;
     }
@@ -128,9 +132,10 @@ class Game extends Model
     /**
      * Set the value of traduction
      *
+     * @param $traduction
      * @return  self
-    */ 
-    public function setTraduction($traduction)
+     */
+    public function setTraduction($traduction): Game
     {
         $this->traduction = $traduction;
         return $this;
@@ -148,9 +153,10 @@ class Game extends Model
     /**
      * Set the value of genre
      *
+     * @param $genre
      * @return  self
-    */ 
-    public function setGenre($genre)
+     */
+    public function setGenre($genre): self
     {
         $this->genre = $genre;
         return $this;
@@ -160,7 +166,7 @@ class Game extends Model
      * Get the value of plateform
      *
     */ 
-    public function getPlateform()
+    public function getPlateform(): string
     {
         return $this->plateform;
     }
@@ -168,9 +174,10 @@ class Game extends Model
     /**
      * Set the value of plateform
      *
+     * @param $plateform
      * @return  self
-    */ 
-    public function setPlateform($plateform)
+     */
+    public function setPlateform($plateform): Game
     {
         $this->plateform = $plateform;
         return $this;
@@ -181,7 +188,7 @@ class Game extends Model
  * 
  * @param object  game
  */
-    public function insertNewGame($game)
+    public function insertNewGame($game): void
     {
 
         $sql = "INSERT INTO `jeu` (nom_jeu, libelle_jeu, createur_jeu, studio_jeu, langue_jeu, genre_jeu, libelle_plateforme, commentaire, note, nom_img, path_img) 
